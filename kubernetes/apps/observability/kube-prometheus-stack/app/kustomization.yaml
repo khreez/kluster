@@ -1,0 +1,11 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./ocirepository.yaml
+  - ./helmrelease.yaml
+  - ./secret.sops.yaml
+  - ./httproute-grafana.yaml
+  - ./httproute-prometheus.yaml
+  - ./httproute-alertmanager.yaml
+  - ./alertmanagerconfig.yaml

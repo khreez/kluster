@@ -46,6 +46,15 @@
       minimumGroupSize: 3,
     },
     {
+      description: "kube-prometheus-stack chart and CRD lockstep",
+      groupName: "kube-prometheus-stack",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/kube-prometheus-stack/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
       description: "Auto-merge GitHub Actions",
       matchManagers: ["github-actions"],
       automerge: true,

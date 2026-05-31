@@ -1,14 +1,14 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: [
-    "config:recommended",
+    "config:best-practices",
     "docker:enableMajor",
-    "helpers:pinGitHubActionDigests",
     ":automergeBranch",
     ":dependencyDashboard",
     ":disableRateLimiting",
     ":semanticCommits",
   ],
+  minimumReleaseAge: "7 days",
   dependencyDashboard: true,
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
   schedule: ["every weekend"],
@@ -60,7 +60,6 @@
       automerge: true,
       automergeType: "branch",
       matchUpdateTypes: ["minor", "patch", "digest"],
-      minimumReleaseAge: "3 days",
       ignoreTests: true,
     },
     {

@@ -9,7 +9,8 @@
     ":disableRateLimiting",
     ":semanticCommits",
   ],
-  minimumReleaseAge: "7 days",
+  minimumReleaseAge: "5 days",
+  minimumReleaseAgeBehaviour: "not-zero",
   dependencyDashboard: true,
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
   schedule: ["every weekend"],
@@ -70,6 +71,7 @@
       automerge: true,
       automergeType: "branch",
       matchUpdateTypes: ["minor", "patch"],
+      minimumReleaseAge: "3 days",
       ignoreTests: true,
     },
     {

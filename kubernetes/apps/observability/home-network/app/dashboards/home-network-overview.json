@@ -1,0 +1,162 @@
+{
+  "uid": "home-network-overview",
+  "title": "Home Network Overview",
+  "tags": ["home-network"],
+  "timezone": "browser",
+  "editable": true,
+  "schemaVersion": 39,
+  "time": { "from": "now-24h", "to": "now" },
+  "refresh": "1m",
+  "links": [
+    { "type": "link", "title": "Pi host detail (Node Exporter Full)", "url": "/d/rYdddlPWk?var-job=pihole-node", "icon": "dashboard" },
+    { "type": "link", "title": "Pi-hole detail", "url": "/d/Pi-hole-Exporter", "icon": "dashboard" }
+  ],
+  "templating": { "list": [] },
+  "annotations": { "list": [] },
+  "panels": [
+    { "type": "row", "title": "Status", "collapsed": false, "gridPos": { "x": 0, "y": 0, "w": 24, "h": 1 }, "panels": [] },
+    {
+      "type": "stat", "title": "Pi", "gridPos": { "x": 0, "y": 1, "w": 4, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "refId": "A", "expr": "up{job=\"pihole-node\"}", "instant": true }],
+      "fieldConfig": { "defaults": {
+        "color": { "mode": "thresholds" },
+        "mappings": [{ "type": "value", "options": { "0": { "text": "DOWN", "color": "red" }, "1": { "text": "UP", "color": "green" } } }],
+        "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "green", "value": 1 }] }
+      }, "overrides": [] },
+      "options": { "colorMode": "background", "graphMode": "none", "textMode": "value", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } }
+    },
+    {
+      "type": "stat", "title": "Exporter", "gridPos": { "x": 4, "y": 1, "w": 4, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "refId": "A", "expr": "up{job=\"pihole-exporter\"}", "instant": true }],
+      "fieldConfig": { "defaults": {
+        "color": { "mode": "thresholds" },
+        "mappings": [{ "type": "value", "options": { "0": { "text": "DOWN", "color": "red" }, "1": { "text": "UP", "color": "green" } } }],
+        "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "green", "value": 1 }] }
+      }, "overrides": [] },
+      "options": { "colorMode": "background", "graphMode": "none", "textMode": "value", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } }
+    },
+    {
+      "type": "stat", "title": "Power", "gridPos": { "x": 8, "y": 1, "w": 4, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "refId": "A", "expr": "max(node_hwmon_in_lcrit_alarm_volts{job=\"pihole-node\", chip=\"soc:firmware_raspberrypi_hwmon\"})", "instant": true }],
+      "fieldConfig": { "defaults": {
+        "color": { "mode": "thresholds" },
+        "mappings": [{ "type": "value", "options": { "0": { "text": "OK", "color": "green" }, "1": { "text": "UNDERVOLTAGE", "color": "red" } } }],
+        "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 1 }] }
+      }, "overrides": [] },
+      "options": { "colorMode": "background", "graphMode": "none", "textMode": "value", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } }
+    },
+    {
+      "type": "stat", "title": "Blocking", "gridPos": { "x": 12, "y": 1, "w": 4, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "refId": "A", "expr": "pihole_status{job=\"pihole-exporter\"}", "instant": true }],
+      "fieldConfig": { "defaults": {
+        "color": { "mode": "thresholds" },
+        "mappings": [{ "type": "value", "options": { "0": { "text": "Disabled", "color": "red" }, "1": { "text": "Enabled", "color": "green" } } }],
+        "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "green", "value": 1 }] }
+      }, "overrides": [] },
+      "options": { "colorMode": "background", "graphMode": "none", "textMode": "value", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } }
+    },
+    {
+      "type": "stat", "title": "Uptime", "gridPos": { "x": 16, "y": 1, "w": 4, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "refId": "A", "expr": "time() - node_boot_time_seconds{job=\"pihole-node\"}", "instant": true }],
+      "fieldConfig": { "defaults": { "unit": "s", "decimals": 0, "color": { "mode": "fixed", "fixedColor": "text" } }, "overrides": [] },
+      "options": { "colorMode": "none", "graphMode": "none", "textMode": "value", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } }
+    },
+    {
+      "type": "stat", "title": "SoC temperature", "gridPos": { "x": 20, "y": 1, "w": 4, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "refId": "A", "expr": "node_thermal_zone_temp{instance=\"pi-hole.lan\", type=\"cpu-thermal\"}", "instant": true }],
+      "fieldConfig": { "defaults": {
+        "unit": "celsius", "decimals": 1, "color": { "mode": "thresholds" },
+        "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "orange", "value": 70 }, { "color": "red", "value": 80 }] }
+      }, "overrides": [] },
+      "options": { "colorMode": "value", "graphMode": "area", "textMode": "value", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } }
+    },
+
+    { "type": "row", "title": "Pi health", "collapsed": false, "gridPos": { "x": 0, "y": 5, "w": 24, "h": 1 }, "panels": [] },
+    {
+      "type": "timeseries", "title": "CPU used", "gridPos": { "x": 0, "y": 6, "w": 6, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "refId": "A", "expr": "100 * (1 - avg(rate(node_cpu_seconds_total{job=\"pihole-node\", mode=\"idle\"}[$__rate_interval])))", "legendFormat": "CPU" }],
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100 }, "overrides": [] },
+      "options": { "legend": { "showLegend": false }, "tooltip": { "mode": "single" } }
+    },
+    {
+      "type": "timeseries", "title": "Memory used", "gridPos": { "x": 6, "y": 6, "w": 6, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "refId": "A", "expr": "100 * (1 - node_memory_MemAvailable_bytes{job=\"pihole-node\"} / node_memory_MemTotal_bytes{job=\"pihole-node\"})", "legendFormat": "Memory" }],
+      "fieldConfig": { "defaults": {
+        "unit": "percent", "min": 0, "max": 100,
+        "custom": { "thresholdsStyle": { "mode": "line" } },
+        "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "orange", "value": 80 }, { "color": "red", "value": 90 }] }
+      }, "overrides": [] },
+      "options": { "legend": { "showLegend": false }, "tooltip": { "mode": "single" } }
+    },
+    {
+      "type": "timeseries", "title": "Root filesystem used", "gridPos": { "x": 12, "y": 6, "w": 6, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "refId": "A", "expr": "100 * (1 - node_filesystem_avail_bytes{job=\"pihole-node\", mountpoint=\"/\"} / node_filesystem_size_bytes{job=\"pihole-node\", mountpoint=\"/\"})", "legendFormat": "/" }],
+      "fieldConfig": { "defaults": {
+        "unit": "percent", "min": 0, "max": 100,
+        "custom": { "thresholdsStyle": { "mode": "line" } },
+        "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "orange", "value": 80 }, { "color": "red", "value": 90 }] }
+      }, "overrides": [] },
+      "options": { "legend": { "showLegend": false }, "tooltip": { "mode": "single" } }
+    },
+    {
+      "type": "timeseries", "title": "SoC temperature over time", "gridPos": { "x": 18, "y": 6, "w": 6, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "refId": "A", "expr": "node_thermal_zone_temp{instance=\"pi-hole.lan\", type=\"cpu-thermal\"}", "legendFormat": "SoC" }],
+      "fieldConfig": { "defaults": {
+        "unit": "celsius",
+        "custom": { "thresholdsStyle": { "mode": "line" } },
+        "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "orange", "value": 70 }, { "color": "red", "value": 80 }] }
+      }, "overrides": [] },
+      "options": { "legend": { "showLegend": false }, "tooltip": { "mode": "single" } }
+    },
+
+    { "type": "row", "title": "DNS", "collapsed": false, "gridPos": { "x": 0, "y": 14, "w": 24, "h": 1 }, "panels": [] },
+    {
+      "type": "stat", "title": "Queries today", "gridPos": { "x": 0, "y": 15, "w": 6, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "refId": "A", "expr": "pihole_dns_queries_today{job=\"pihole-exporter\"}", "instant": true }],
+      "fieldConfig": { "defaults": { "unit": "short", "decimals": 0, "color": { "mode": "fixed", "fixedColor": "blue" } }, "overrides": [] },
+      "options": { "colorMode": "value", "graphMode": "none", "textMode": "value", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } }
+    },
+    {
+      "type": "stat", "title": "Blocked today", "gridPos": { "x": 6, "y": 15, "w": 6, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "refId": "A", "expr": "pihole_ads_blocked_today{job=\"pihole-exporter\"}", "instant": true }],
+      "fieldConfig": { "defaults": { "unit": "short", "decimals": 0, "color": { "mode": "fixed", "fixedColor": "red" } }, "overrides": [] },
+      "options": { "colorMode": "value", "graphMode": "none", "textMode": "value", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } }
+    },
+    {
+      "type": "stat", "title": "% blocked today", "gridPos": { "x": 12, "y": 15, "w": 6, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "refId": "A", "expr": "pihole_ads_percentage_today{job=\"pihole-exporter\"}", "instant": true }],
+      "fieldConfig": { "defaults": { "unit": "percent", "decimals": 1, "color": { "mode": "fixed", "fixedColor": "orange" } }, "overrides": [] },
+      "options": { "colorMode": "value", "graphMode": "none", "textMode": "value", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } }
+    },
+    {
+      "type": "stat", "title": "Unique clients (24h)", "gridPos": { "x": 18, "y": 15, "w": 6, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "refId": "A", "expr": "pihole_unique_clients{job=\"pihole-exporter\"}", "instant": true }],
+      "fieldConfig": { "defaults": { "unit": "short", "decimals": 0, "color": { "mode": "fixed", "fixedColor": "text" } }, "overrides": [] },
+      "options": { "colorMode": "none", "graphMode": "none", "textMode": "value", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } }
+    },
+    {
+      "type": "timeseries", "title": "Queries vs blocked (cumulative per day)", "gridPos": { "x": 0, "y": 19, "w": 24, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        { "refId": "A", "expr": "pihole_dns_queries_today{job=\"pihole-exporter\"}", "legendFormat": "Queries" },
+        { "refId": "B", "expr": "pihole_ads_blocked_today{job=\"pihole-exporter\"}", "legendFormat": "Blocked" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "short", "min": 0 }, "overrides": [] },
+      "options": { "legend": { "showLegend": true, "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } }
+    }
+  ]
+}

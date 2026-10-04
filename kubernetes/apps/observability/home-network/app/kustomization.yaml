@@ -1,0 +1,23 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./scrapeconfig.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+  labels:
+    grafana_dashboard: "1"
+configMapGenerator:
+  # grafana.com #1860 "Node Exporter Full", revision 45 (unmodified)
+  - name: dashboard-node-exporter-full
+    files:
+      - node-exporter-full.json=./dashboards/node-exporter-full.json
+  # grafana.com #10176 "Pi-hole Exporter", revision 3
+  # imported: dropped __inputs/__requires, datasource -> uid prometheus, grafana-piechart-panel -> piechart
+  - name: dashboard-pihole-exporter
+    files:
+      - pihole-exporter.json=./dashboards/pihole-exporter.json
+  # custom at-a-glance overview (spec: docs/superpowers/specs/2026-10-04-home-network-dashboards-design.md)
+  - name: dashboard-home-network-overview
+    files:
+      - home-network-overview.json=./dashboards/home-network-overview.json

@@ -10,7 +10,7 @@
     ":semanticCommits",
   ],
   minimumReleaseAge: "5 days",
-  minimumReleaseAgeBehaviour: "not-zero",
+  minimumReleaseAgeBehaviour: "timestamp-optional",
   dependencyDashboard: true,
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
   schedule: ["every weekend"],

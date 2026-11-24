@@ -1,0 +1,70 @@
+schema: spec-driven
+
+# Project context (optional)
+# Add only constraints that should guide OpenSpec artifacts and workflows.
+# Include constraints an agent cannot infer by reading the code.
+# Keep general project documentation and discoverable codebase facts out.
+# Example:
+#   context: |
+#     Designs and tasks must cover Windows, macOS, and Linux
+#     Write all artifacts in Spanish
+
+context: |
+  Purpose: GitOps source of truth for a personal home-lab Kubernetes cluster
+  (Talos Linux + Flux). Goals are learning and less cloud dependency. Some
+  services are used by family members, so uptime and robustness matter.
+
+  Constraints:
+  - Do not assume high availability (HA) is available.
+  - Cluster changes go through Git. Do not propose imperative kubectl/helm changes as the end state.
+  - Node changes go through talos/. Flux does not apply them.
+  - New services are LAN-only unless the proposal explicitly justifies public exposure.
+
+  Agent limits:
+  - Never read, parse, or decrypt secrets: *.sops.*, age.key, .env, tokens, deploy keys, kubeconfig, talosconfig. Ask the user instead.
+  - Never commit, push, or make material or destructive changes without explicit permission. Approving a spec or design is not permission.
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always state what is out of scope
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
+
+rules:
+  proposal:
+    - Keep proposals under 500 words.
+    - Always state what is out of scope.
+  specs:
+    - Write normative requirement statements with MUST or MUST NOT.
+    - Use Given/When/Then format for acceptance criteria.
+  design:
+    - Must state the blast radius and how to verify the result.
+    - Always include a rollback plan for any changes to the live cluster.
+  tasks:
+    - Break tasks into chunks of max 2 hours.
+    - End every task item with a validation step. The user makes any resulting commit; tasks must not include commit or push steps.
+    - List node changes done through talos as separate manual steps.
+
+# Per-operation guidance (optional)
+# Add advisory guidance for how apply and archive work should be conducted.
+# This is separate from artifact rules above.
+# Example:
+#   operations:
+#     apply:
+#       guidance:
+#         - Keep test summaries concise
+#     archive:
+#       guidance:
+#         - Summarize the archive outcome before finishing
+
+operations:
+  apply:
+    guidance:
+      - Keep test summaries concise.
+  archive:
+    guidance:
+      - Summarize the archive outcome and delta changes before finishing.
